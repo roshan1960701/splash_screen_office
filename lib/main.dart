@@ -6,6 +6,7 @@ import 'package:video_player/video_player.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:splash_screen/EligiblityScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
           },
         ),
       ),
-      home: MyHomePage(videoPath: videoPath),
+      home: second()/*MyHomePage(videoPath: videoPath)*/,
     );
   }
 }

@@ -19,10 +19,13 @@ class _page_transitionState extends State<page_transition>
   AnimationController _animationController2;
   Timer timer;
   int counter = 0;
+  bool check = false;
+  bool valid = false;
 
   incrementCounter() {
     setState(() {
       counter++;
+      valid = true;
     });
   }
 
@@ -33,7 +36,10 @@ class _page_transitionState extends State<page_transition>
   }
 
   gotoSecondPage() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => second()));
+    // Navigator.push(context, MaterialPageRoute(builder: (context) => second()));
+    setState(() {
+      check = true;
+    });
   }
 
   @override
@@ -187,12 +193,22 @@ class _page_transitionState extends State<page_transition>
                     borderRadius: BorderRadius.all(Radius.circular(20))),
                 child: Center(
                   child: Text(
-                    "Click Me",
+                    valid ? "Click Me":" hello",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
+
               ),
-              onTapDown: (_) => incrementCounter(),
+              useCache: false,
+
+              onTap: (){
+                valid == true ? valid = false : valid = true;
+                print("Tapped!!!");
+                setState(() {
+
+                });
+              },
+             // onTapDown: (_) => incrementCounter(),
               onLongPress: () => timer = Timer.periodic(
                 const Duration(milliseconds: 100),
                 (_) => incrementCounter(),
@@ -238,8 +254,8 @@ class _page_transitionState extends State<page_transition>
             SizedBox(
               height: 10.0,
             ),
-            _custom_animation.customButton("Hello world", gotoSecondPage,
-                incrementCounter(), decrementCounter()),
+            /*_custom_animation.customButton("Hello world", gotoSecondPage,
+                incrementCounter(), decrementCounter()),*/
             SizedBox(
               height: 10.0,
             ),
@@ -258,10 +274,13 @@ class _page_transitionState extends State<page_transition>
                 )),
             _custom_animation.customMaterialButton(
                 helloText(), "CLick here", Colors.greenAccent),
+
             customButton(
                 onPressed: () {
                   Future.delayed(Duration(milliseconds: 800), () {
-                    gotoSecondPage();
+                    setState(() {
+                      check = true;
+                    });
                   });
                 },
                 container: Container(
@@ -273,7 +292,7 @@ class _page_transitionState extends State<page_transition>
                       borderRadius: BorderRadius.circular(100)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [Icon(Icons.face), Text("Roshan")],
+                    children: [Icon(check ? Icons.face : Icons.accessibility), Text("Roshan")],
                   ),
                 )),
           ],
@@ -284,5 +303,8 @@ class _page_transitionState extends State<page_transition>
 
   helloText() {
     print("Cliked!!!!");
+    setState(() {
+      check = true;
+    });
   }
 }

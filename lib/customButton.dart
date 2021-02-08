@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:spring_button/spring_button.dart';
 
@@ -31,25 +29,6 @@ class _customButtonState extends State<customButton> {
     setState(() {
       counter--;
     });
-  }
-
-  Widget customTransition(color, openBuilder, closeBuilder) {
-    return OpenContainer(
-        openColor: color,
-        transitionType: ContainerTransitionType.fade,
-        transitionDuration: Duration(milliseconds: 800),
-        openBuilder: (context, _) => openBuilder,
-        closedElevation: 1.0,
-        openElevation: 50.0,
-        /*openShape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32),
-                      side: BorderSide(color: Colors.white, width: 1)),*/
-        closedShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(32),
-          /*side: BorderSide(color: Colors.white, width: 1)*/
-        ),
-        closedColor: Colors.red,
-        closedBuilder: (context, _) => closeBuilder);
   }
 
   @override

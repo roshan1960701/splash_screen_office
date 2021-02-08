@@ -1,11 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:splash_screen/appReview.dart';
 import 'package:splash_screen/download_files_service.dart';
 import 'package:splash_screen/fourth.dart';
+import 'package:splash_screen/ratingUI.dart';
 import 'package:splash_screen/screenPopUp.dart';
+import 'package:splash_screen/subscription.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:io';
+import 'package:splash_screen/page_swipe.dart';
 import 'package:splash_screen/third.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,7 +18,9 @@ import 'package:splash_screen/videoDownload.dart';
 import 'package:package_info/package_info.dart';
 import 'package:animations/animations.dart';
 import 'package:splash_screen/page_transition.dart';
+import 'package:swipeable_page_route/swipeable_page_route.dart';
 import 'package:page_transition/page_transition.dart';
+
 
 class second extends StatefulWidget {
   @override
@@ -467,6 +474,22 @@ class _secondState extends State<second> with SingleTickerProviderStateMixin {
                 child: Text("Rating Dialog"),
               ),
 
+              MaterialButton(
+                color: Colors.amberAccent,
+                elevation: 20.0,
+                minWidth: 80,
+                height: 40,
+                onPressed: (){
+                  Navigator.push(
+                      context,
+                      PageTransition(
+                          child: subscription(),
+                          type: PageTransitionType.rightToLeft,
+                          duration: Duration(milliseconds: 200 )));
+                },
+                child: Text("UI"),
+              ),
+
               InkWell(
                 onTap: () {
                   Future.delayed(Duration(milliseconds: 400), () {
@@ -531,7 +554,9 @@ class _secondState extends State<second> with SingleTickerProviderStateMixin {
                           "Container Transition",
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
-                      ))),
+                      )
+                  )
+              ),
               /*Center(
                 child: GestureDetector(
                   onTapDown: _onTapDown,
@@ -557,7 +582,55 @@ class _secondState extends State<second> with SingleTickerProviderStateMixin {
                   color: Colors.cyan,
                   child: Text("Animate Button"),
                 ),
-              )
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: MaterialButton(
+                  onPressed: () {
+                    Navigator.of(context).push(SwipeablePageRoute(
+                      onlySwipeFromEdge: true,
+                      builder: (BuildContext context) => page_swipe(),
+                    ));
+                  },
+                  color: Colors.cyan,
+                  child: Text("Page swipe"),
+                ),
+              ),
+
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: MaterialButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => page_swipe(),
+                    ),
+                    );
+                  },
+                  color: Colors.cyan,
+                  child: Text("Page Test"),
+                ),
+              ),
+
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: MaterialButton(
+                  onPressed: () async{
+
+                    String url = "https://apps.apple.com/is/app/heycloudy-story-learning-app/id1536910417";
+                    String url1 = "https://play.google.com/store/apps/details?id=listen.to.heycloudy&hl=en_IN&gl=US";
+                    if(await canLaunch(url)){
+                    // await launch(url);
+                      IosAlertDialog();
+                    }
+                    else{
+                    print("cannot launch");
+                    }
+
+                  },
+                  color: Colors.deepOrangeAccent,
+                  child: Text("Remote config"),
+                ),
+              ),
 
               // Image.file(File(imagePath)),
               // checkImage ? Image.asset(imagePath) : Text("No image Found"),
@@ -565,6 +638,38 @@ class _secondState extends State<second> with SingleTickerProviderStateMixin {
           ),
         ),
       ),
+    );
+  }
+
+  Future IosAlertDialog()async{
+    return showDialog(
+        barrierDismissible: false,
+        context: context,
+      builder: (BuildContext context){
+          return CupertinoAlertDialog(
+            title: Text("HeyCloudy Update Available!"),
+            content: Text("There is newer version of this app available"),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                onPressed: ()async{
+                  exit(0);
+                },
+                child: Text("Exit"),
+              ),
+              CupertinoDialogAction(
+                onPressed: ()async{
+                      String url = "https://apps.apple.com/is/app/heycloudy-story-learning-app/id1536910417";
+                      String url1 = "https://play.google.com/store/apps/details?id=listen.to.heycloudy&hl=en_IN&gl=US";
+                      if(await canLaunch(url)){
+                        await launch(url);
+                      }
+                },
+                child: Text("Update"),
+              ),
+            ],
+          );
+      }
+
     );
   }
 }
